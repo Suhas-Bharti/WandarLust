@@ -16,5 +16,10 @@
   "bugs": {
     "url": "https://github.com/Suhas-Bharti/WandarLust/issues"
   },
-  "homepage": "https://github.com/Suhas-Bharti/WandarLust#readme"
+  "homepage": "https://github.com/Suhas-Bharti/WandarLust#readme",
+  "dependencies": {
+    "ejs": "^4.0.1",
+    "express": "^5.2.1",
+    "mongoose": "^9.2.1"
+  }
 }
