@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 const Listing = require("./models/listing");
 const path = require("path");
 
+const methodOverride = require("method-override");
+
 const app = express();
 const PORT = 8080;
 
@@ -17,6 +19,7 @@ mongoose.connect(MONGO_URL)
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
+app.use(methodOverride("_method"));
 
 // Home Route
 app.get("/", (req, res) => {
@@ -100,18 +103,10 @@ app.get("/listings/:id/edit", async (req, res) => {
 });
 
 // Update Route - Handle form submission to update an existing listing  
-app.post("/listings/:id/update", async (req, res) => {
+app.put("/listings/:id", async (req, res) => {
   let { id } = req.params;
-  const { title, description, image, price, location, country } = req.body;
-  try { 
-    await Listing.findByIdAndUpdate(id, {
-      title,
-      description,
-      image,
-      price,
-      location,
-      country
-    });
+  try {
+    await Listing.findByIdAndUpdate(id, req.body, { runValidators: true });
     res.redirect(`/listings/${id}`);
   } catch (err) {
     console.log(err);
