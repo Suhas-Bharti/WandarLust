@@ -48,6 +48,12 @@ app.get("/listings", async (req, res) => {
 //   }
 // });
 
+// Create Route - Show form to create a new listing
+app.get("/listings/new", (req, res) => {
+  res.render("listings/new.ejs");
+});
+
+
 // Show Route details of a listing
 app.get("/listings/:id", async (req, res) => {
   let { id } = req.params;
@@ -57,6 +63,27 @@ app.get("/listings/:id", async (req, res) => {
   } catch (err) {
     console.log(err);
     res.status(500).send("Error fetching listing details");
+  }
+});
+
+
+// Create Route - Handle form submission to create a new listing
+app.post("/listings", async (req, res) => {
+  const { title, description, image, price, location, country } = req.body;
+  let newListing = new Listing({  
+    title,
+    description,
+    image,
+    price,
+    location,
+    country
+  });
+  try {
+    await newListing.save();
+    res.redirect("/listings");
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Error creating listing");
   }
 });
 
