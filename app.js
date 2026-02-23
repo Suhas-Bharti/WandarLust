@@ -87,6 +87,38 @@ app.post("/listings", async (req, res) => {
   }
 });
 
+// Edit Route - Show form to edit an existing listing
+app.get("/listings/:id/edit", async (req, res) => {
+  let { id } = req.params;
+  try {
+    const listing = await Listing.findById(id);
+    res.render("listings/edit.ejs", { listing });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Error fetching listing for editing");
+  } 
+});
+
+// Update Route - Handle form submission to update an existing listing  
+app.post("/listings/:id/update", async (req, res) => {
+  let { id } = req.params;
+  const { title, description, image, price, location, country } = req.body;
+  try { 
+    await Listing.findByIdAndUpdate(id, {
+      title,
+      description,
+      image,
+      price,
+      location,
+      country
+    });
+    res.redirect(`/listings/${id}`);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Error updating listing");
+  }
+});
+
 // Start Server
 app.listen(PORT, () => {
   console.log(`Server connected on http://localhost:${PORT}`);
