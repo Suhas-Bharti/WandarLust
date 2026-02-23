@@ -16,13 +16,14 @@ mongoose.connect(MONGO_URL)
 // Set EJS as the templating engine
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
+app.use(express.urlencoded({ extended: true }));
 
 // Home Route
 app.get("/", (req, res) => {
   res.send("Server is running successfully!");
 });
 
-// Import listing routes
+// Import index(listing) routes
 app.get("/listings", async (req, res) => {
   const allListings = await Listing.find({});
   res.render("listings/index.ejs", {allListings});
@@ -46,6 +47,18 @@ app.get("/listings", async (req, res) => {
 //     res.status(500).send("Error creating sample listing");
 //   }
 // });
+
+// Show Route details of a listing
+app.get("/listings/:id", async (req, res) => {
+  let { id } = req.params;
+  try {
+    const listing = await Listing.findById(id);
+    res.render("listings/show.ejs", { listing });
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Error fetching listing details");
+  }
+});
 
 // Start Server
 app.listen(PORT, () => {
