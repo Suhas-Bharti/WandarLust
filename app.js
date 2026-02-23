@@ -114,6 +114,18 @@ app.put("/listings/:id", async (req, res) => {
   }
 });
 
+// Delete Route - Handle deletion of a listing
+app.delete("/listings/:id", async (req, res) => {
+  let { id } = req.params; 
+  try {
+    await Listing.findByIdAndDelete(id);
+    res.redirect("/listings");
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Error deleting listing");
+  }
+});
+
 // Start Server
 app.listen(PORT, () => {
   console.log(`Server connected on http://localhost:${PORT}`);
