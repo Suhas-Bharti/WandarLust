@@ -87,7 +87,7 @@ body {
   text-overflow: ellipsis;
 }
 
-/* Form Style for create new listing */
+/* Form Style for create new listing and Edit your listing */
 
 .form-card {
     border-radius: 15px;
@@ -105,7 +105,7 @@ body {
 /* Input Focus Effect */
 .custom-input:focus {
     border-color: #fe424d !important;
-    box-shadow: 0 0 8px rgba(254, 66, 77, 0.3) !important;
+    box-shadow: 0 0 8px rgba(252, 67, 79, 0.5) !important;
 }
 
 /* Button Base */

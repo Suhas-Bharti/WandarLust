@@ -1,37 +1,65 @@
 <% layout("/layouts/boilerplate") %>
 
-    <body>
-        <h3>Edit Your Listing</h3>
-        <form method="post" action="/listings/<%= listing._id %>?_method=PUT">
-            <label for="title">Title:</label>
-            <input type="text" id="title" name="title" placeholder="Enter title" required value="<%= listing.title %>">
-            <br /><br />
+<body>
+    <h2 class="mb-4 fw-bold text-center" style="color:#fe424d;">
+        Edit Your Listing
+    </h2>
 
-            <label for="description">Description:</label><br>
-            <textarea id="description" name="description" rows="4" cols="50" placeholder="Enter description"
-                required><%= listing.description %></textarea>
-            <br /><br />
+    <div class="row mb-5">
+        <div class="form-card col-8 offset-2">
+            <form method="post" action="/listings/<%= listing._id %>?_method=PUT">
 
-            <label for="image">Image:</label>
-            <input type="text" id="image" name="image" placeholder="Enter image URL" required
-                value="<%= listing.image %>" />
-            <br /><br />
+                <div class="mb-3">
+                    <label for="title" class="form-label fw-semibold">Title</label>
+                    <input type="text" id="title" name="title"
+                        class="form-control custom-input"
+                        required value="<%= listing.title %>">
+                </div>
 
-            <label for="price">Price:</label>
-            <input type="number" id="price" name="price" placeholder="Enter price" required
-                value="<%= listing.price %>" />
-            <br /><br />
+                <div class="mb-3">
+                    <label for="description" class="form-label fw-semibold">Description</label>
+                    <textarea id="description" name="description"
+                        rows="4" class="form-control custom-input"
+                        required><%= listing.description %></textarea>
+                </div>
 
-            <label for="location">Location:</label>
-            <input type="text" id="location" name="location" placeholder="Enter location" required
-                value="<%= listing.location %>" />
-            <br /><br />
+                <div class="mb-3">
+                    <label for="image" class="form-label fw-semibold">Image URL</label>
+                    <input type="text" id="image" name="image"
+                        class="form-control custom-input"
+                        required value="<%= listing.image %>" />
+                </div>
 
-            <label for="country">Country:</label>
-            <input type="text" id="country" name="country" placeholder="Enter country" required
-                value="<%= listing.country %>" />
-            <br /><br />
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="price" class="form-label fw-semibold">Price</label>
+                        <input type="number" id="price" name="price"
+                            class="form-control custom-input"
+                            required value="<%= listing.price %>" />
+                    </div>
 
-            <button type="submit">Update Listing</button>
-        </form>
-    </body>
+                    <div class="col-md-8 mb-3">
+                        <label for="location" class="form-label fw-semibold">Location</label>
+                        <input type="text" id="location" name="location"
+                            class="form-control custom-input"
+                            required value="<%= listing.location %>" />
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="country" class="form-label fw-semibold">Country</label>
+                    <input type="text" id="country" name="country"
+                        class="form-control custom-input"
+                        required value="<%= listing.country %>" />
+                </div>
+
+                <div class="d-flex justify-content-center">
+                    <button type="submit" class="btn btn-dark add-btn px-4 py-2 fw-semibold">
+                        Update Listing
+                    </button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</body>
