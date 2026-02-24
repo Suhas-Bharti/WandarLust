@@ -5,11 +5,12 @@ body {
     min-height: 100vh;
 }
 
-.container {
+.page-content{
     flex: 1;
     padding-top: 0.8rem;
     padding-bottom: 0.8rem;
 }
+
 /* Navbar Style */
 .navbar {
     height: 5rem;
@@ -48,7 +49,7 @@ body {
     transition: 0.3s;
 }
 
-/* Card Style */
+/* Styling for All Listing Page */
 .card {
     border: none; 
     margin-bottom: 2rem;
@@ -121,4 +122,10 @@ body {
     color: white !important;
     transform: scale(1.05);
     box-shadow: 0 5px 15px rgba(254, 66, 77, 0.4);
+}
+
+/* Styling for Listing Details Page */
+
+.show-image:hover {
+    transform: scale(1.02);
 }
