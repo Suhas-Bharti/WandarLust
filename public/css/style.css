@@ -88,10 +88,12 @@ body {
 }
 
 /* Form Style for create new listing */
-/* Form Card Styling */
+
 .form-card {
     border-radius: 15px;
     background: #ffffff;
+    padding: 25px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.08);
 }
 
 /* Input Styling */
@@ -103,7 +105,7 @@ body {
 /* Input Focus Effect */
 .custom-input:focus {
     border-color: #fe424d !important;
-    box-shadow: 0 0 8px rgba(254, 66, 77, 0.3) ima !important;
+    box-shadow: 0 0 8px rgba(254, 66, 77, 0.3) !important;
 }
 
 /* Button Base */
