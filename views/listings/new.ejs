@@ -4,7 +4,7 @@
         <h2 class="mb-4 fw-bold text-center" style="color:#fe424d;"> Create New Listing </h2>
         <div class="row mb-5">
             <div class="form-card col-8 offset-2">
-                <form method="post" action="/listings">
+                <form method="post" action="/listings" novalidate class="needs-validation">
                     <div class="mb-3">
                         <label for="title" class="form-lable fw-semibold">Title</label>
                         <input type="text" id="title" name="title" class="form-control custom-input" placeholder="Enter listing title"
@@ -17,8 +17,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="image" class="form-lable fw-semibold">Image URL</label>
-                        <input type="text" id="image" name="image" class="form-control custom-input" placeholder="Paste image link here"
-                            required />
+                        <input type="text" id="image" name="image" class="form-control custom-input" placeholder="Paste image link here"/>
                     </div>
                     <div class="row">
                         <div class="col-md-4 mb-3 ">
@@ -40,7 +39,7 @@
 
                     <div class="d-flex justify-content-center">
                         <button type="submit" class="btn btn-dark add-btn px-4 py-2 fw-semibold">
-                            Create Listing
+                            Add Listing
                         </button>
                     </div>
                 </form>

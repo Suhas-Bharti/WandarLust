@@ -126,6 +126,12 @@ body {
 
 /* Styling for Listing Details Page */
 
+.show-image {
+    height: 380px !important;
+    object-fit: cover;
+        border-radius: 10px;
+        transition: transform 0.3s ease;
+}
 .show-image:hover {
     transform: scale(1.02);
 }

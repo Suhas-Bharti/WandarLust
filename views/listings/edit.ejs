@@ -7,7 +7,7 @@
 
     <div class="row mb-5">
         <div class="form-card col-8 offset-2">
-            <form method="post" action="/listings/<%= listing._id %>?_method=PUT">
+            <form method="post" action="/listings/<%= listing._id %>?_method=PUT" novalidate class="needs-validation">
 
                 <div class="mb-3">
                     <label for="title" class="form-label fw-semibold">Title</label>
@@ -27,7 +27,7 @@
                     <label for="image" class="form-label fw-semibold">Image URL</label>
                     <input type="text" id="image" name="image"
                         class="form-control custom-input"
-                        required value="<%= listing.image %>" />
+                        value="<%= listing.image %>" />
                 </div>
 
                 <div class="row">
