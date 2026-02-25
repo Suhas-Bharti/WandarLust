@@ -9,11 +9,15 @@
                         <label for="title" class="form-lable fw-semibold">Title</label>
                         <input type="text" id="title" name="title" class="form-control custom-input" placeholder="Enter listing title"
                             required>
+                        <div class="valid-feedback">Title looks good!</div>
+                        <div class="invalid-feedback">Please enter a valid title.</div>
                     </div>
                     <div class="mb-3">
                         <label for="description" class="form-lable fw-semibold">Description</label>
                         <textarea id="description" name="description" rows="4" class="form-control custom-input"
                             placeholder="Enter listing description" required></textarea>
+                        <div class="valid-feedback">Description looks good!</div>
+                        <div class="invalid-feedback">Please enter a short description.</div>
                     </div>
                     <div class="mb-3">
                         <label for="image" class="form-lable fw-semibold">Image URL</label>
@@ -24,17 +28,23 @@
                             <label for="price" class="form-lable fw-semibold">Price</label>
                             <input type="number" id="price" name="price" class="form-control custom-input" placeholder="₹1200"
                                 required />
+                            <div class="valid-feedback">Price looks good!</div>
+                            <div class="invalid-feedback">Price should be valid.</div>
                         </div>
                         <div class="col-md-8 mb-3">
                             <label for="location" class="form-lable fw-semibold">Location</label>
                             <input type="text" id="location" name="location" class="form-control custom-input"
                                 placeholder="Enter city/location" required />
+                            <div class="valid-feedback">Location looks good!</div>
+                            <div class="invalid-feedback">Location name should be valid.</div>
                         </div>
                     </div>
                     <div class="mb-5">
                         <label for="country" class="form-lable fw-semibold">Country</label>
                         <input type="text" id="country" name="country" class="form-control custom-input" placeholder="Enter country name"
                             required />
+                        <div class="valid-feedback">Country looks good!</div>
+                        <div class="invalid-feedback">Country name should be valid.</div>
                     </div>
 
                     <div class="d-flex justify-content-center">
