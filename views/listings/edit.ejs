@@ -11,7 +11,7 @@
 
                 <div class="mb-3">
                     <label for="title" class="form-label fw-semibold">Title</label>
-                    <input type="text" id="title" name="title"
+                    <input type="text" id="title" name="listing[title]"
                         class="form-control custom-input"
                         required value="<%= listing.title %>">
                         <div class="valid-feedback">Title looks good!</div>
@@ -20,7 +20,7 @@
 
                 <div class="mb-3">
                     <label for="description" class="form-label fw-semibold">Description</label>
-                    <textarea id="description" name="description"
+                    <textarea id="description" name="listing[description]"
                         rows="4" class="form-control custom-input"
                         required><%= listing.description %></textarea>
                     <div class="valid-feedback">Description looks good!</div>
@@ -29,7 +29,7 @@
 
                 <div class="mb-3">
                     <label for="image" class="form-label fw-semibold">Image URL</label>
-                    <input type="text" id="image" name="image"
+                    <input type="text" id="image" name="listing[image]"
                         class="form-control custom-input"
                         value="<%= listing.image %>"
                         required />
@@ -40,7 +40,7 @@
                 <div class="row">
                     <div class="col-md-4 mb-3">
                         <label for="price" class="form-label fw-semibold">Price</label>
-                        <input type="number" id="price" name="price"
+                        <input type="number" id="price" name="listing[price]"
                             class="form-control custom-input"
                             required value="<%= listing.price %>" />
                         <div class="valid-feedback">Price looks good!</div>
@@ -49,7 +49,7 @@
 
                     <div class="col-md-8 mb-3">
                         <label for="location" class="form-label fw-semibold">Location</label>
-                        <input type="text" id="location" name="location"
+                        <input type="text" id="location" name="listing[location]"
                             class="form-control custom-input"
                             required value="<%= listing.location %>" />
                         <div class="valid-feedback">Location looks good!</div>
@@ -59,7 +59,7 @@
 
                 <div class="mb-4">
                     <label for="country" class="form-label fw-semibold">Country</label>
-                    <input type="text" id="country" name="country"
+                    <input type="text" id="country" name="listing[country]"
                         class="form-control custom-input"
                         required value="<%= listing.country %>" />
                     <div class="valid-feedback">Country looks good!</div>
