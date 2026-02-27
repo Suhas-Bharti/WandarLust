@@ -8,6 +8,8 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 
 const wrapAsync = require("./utils/wrapAsync");
+const ExpressError = require("./utils/ExpressError");
+
 
 const app = express();
 const PORT = 8080;
@@ -34,7 +36,7 @@ app.get("/", (req, res) => {
 // Import index(listing) routes
 app.get("/listings", async (req, res) => {
   const allListings = await Listing.find({});
-  res.render("listings/index.ejs", {allListings});
+  res.render("listings/index.ejs", { allListings });
 });
 
 // app.get("/testListing", async (req, res) => {
@@ -63,64 +65,58 @@ app.get("/listings/new", (req, res) => {
 
 
 // Show Route details of a listing
-app.get("/listings/:id", async (req, res) => {
+app.get("/listings/:id", wrapAsync(async (req, res) => {
   let { id } = req.params;
-  try {
-    const listing = await Listing.findById(id);
-    res.render("listings/show.ejs", { listing });
-  } catch (err) {
-    console.log(err);
-    res.status(500).send("Error fetching listing details");
-  }
-});
+  const listing = await Listing.findById(id);
+  res.render("listings/show.ejs", { listing });
+}));
 
 
 // Create Route - Handle form submission to create a new listing
 app.post("/listings", wrapAsync(async (req, res) => {
+  if (!req.body.listing) {
+    throw new ExpressError(400, "Send valid data for listing");
+  }
   const newListing = new Listing(req.body.listing);
   await newListing.save();
   res.redirect("/listings");
 }));
 
 // Edit Route - Show form to edit an existing listing
-app.get("/listings/:id/edit", async (req, res) => {
+app.get("/listings/:id/edit", wrapAsync(async (req, res) => {
   let { id } = req.params;
-  try {
-    const listing = await Listing.findById(id);
-    res.render("listings/edit.ejs", { listing });
-  } catch (err) {
-    console.log(err);
-    res.status(500).send("Error fetching listing for editing");
-  } 
-});
+  const listing = await Listing.findById(id);
+  res.render("listings/edit.ejs", { listing });
+}));
 
 // Update Route - Handle form submission to update an existing listing  
-app.put("/listings/:id", async (req, res) => {
-  let { id } = req.params;
-  try {
-    await Listing.findByIdAndUpdate(id, req.body, { runValidators: true });
-    res.redirect(`/listings/${id}`);
-  } catch (err) {
-    console.log(err);
-    res.status(500).send("Error updating listing");
+app.put("/listings/:id", wrapAsync(async (req, res) => {
+  if (!req.body.listing) {
+    throw new ExpressError(400, "Send valid data for listing");
   }
-});
+  let { id } = req.params;
+  await Listing.findByIdAndUpdate(id, { ...req.body.listing });
+  res.redirect(`/listings/${id}`);
+}));
 
 // Delete Route - Handle deletion of a listing
-app.delete("/listings/:id", async (req, res) => {
-  let { id } = req.params; 
-  try {
-    await Listing.findByIdAndDelete(id);
-    res.redirect("/listings");
-  } catch (err) {
-    console.log(err);
-    res.status(500).send("Error deleting listing");
-  }
+app.delete("/listings/:id", wrapAsync(async (req, res) => {
+  let { id } = req.params;
+  let deletedListing = await Listing.findByIdAndDelete(id);
+  console.log(deletedListing);
+  res.redirect("/listings");
+}));
+
+// Handle all unknown routes (404 Not Found)
+app.use((req, res, next) => {
+  next(new ExpressError(404, "Page Not Found!"));
 });
 
 // Define Middleware (Custom Error Handling)
 app.use((err, req, res, next) => {
-  res.send("Something went wrong!");
+  let { statusCode = 500, message = "Something went Wrong!" } = err;
+  res.status(statusCode).render("error.ejs", { message });
+  // res.send("Something went wrong!");
 });
 
 // Start Server
