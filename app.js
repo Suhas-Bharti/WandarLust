@@ -10,6 +10,7 @@ const ejsMate = require("ejs-mate");
 const wrapAsync = require("./utils/wrapAsync");
 const ExpressError = require("./utils/ExpressError");
 const { listingSchema } = require("./schema");
+const Review = require("./models/review");
 
 
 const app = express();
@@ -113,6 +114,20 @@ app.delete("/listings/:id", wrapAsync(async (req, res) => {
   console.log(deletedListing);
   res.redirect("/listings");
 }));
+
+//Reviews (post route)
+app.post("/listings/:id/reviews", async(req, res) => {
+  let listing = await Listing.findById(req.params.id);
+  let newReview = new Review(req.body.review);
+
+  listing.reviews.push(newReview);
+
+  await newReview.save();
+  await listing.save();
+
+  res.redirect(`/listings/${listing._id}`);
+});
+
 
 // Handle all unknown routes (404 Not Found)
 app.use((req, res, next) => {
