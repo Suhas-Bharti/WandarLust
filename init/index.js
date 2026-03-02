@@ -3,6 +3,7 @@ const data = require("./data").data;
 const Listing = require("../models/listing");
 
 const MONGO_URL = "mongodb://127.0.0.1:27017/WandarLust";
+
 // Connect to MongoDB
 mongoose.connect(MONGO_URL)
   .then(() => console.log("DB connected"))
