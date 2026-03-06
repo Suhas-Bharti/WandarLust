@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const wrapAsync = require("../utils/wrapAsync");     // Handles async errors
 const ExpressError = require("../utils/ExpressError"); // Custom error handler
-const { listingSchema, reviewSchema } = require("../schema"); // Joi validation schemas
+const { listingSchema } = require("../schema"); // Joi validation schemas
 const Listing = require("../models/listing");
 
 // ===============================

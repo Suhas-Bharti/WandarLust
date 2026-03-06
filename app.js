@@ -3,27 +3,18 @@
 // ===============================
 const express = require("express");
 const mongoose = require("mongoose");
-
-// ===============================
-// Models
-// ===============================
-const Review = require("./models/review");
-
 // ===============================
 // Utility & Config Imports
 // ===============================
 const path = require("path");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
-
 // Custom utilities
-const wrapAsync = require("./utils/wrapAsync");     // Handles async errors
 const ExpressError = require("./utils/ExpressError"); // Custom error handler
-const { listingSchema, reviewSchema } = require("./schema"); // Joi validation schemas
 
-const { wrap } = require("module"); // (Currently unused)
 
 const listings = require("./routes/listing")
+const reviews = require("./routes/review");
 
 
 // ===============================
@@ -71,58 +62,9 @@ app.use(express.static(path.join(__dirname, "/public")));
 app.get("/", (req, res) => {
   res.send("Server is running successfully!");
 });
-
-
-// ===============================
-// Server-Side Validation Middleware
-// ===============================
-
-
-// Validate Review data using Joi
-const validateReview = (req, res, next) => {
-  let { error } = reviewSchema.validate(req.body);
-  if (error) {
-    let errMsg = error.details.map((el) => el.message).join(",");
-    throw new ExpressError(400, errMsg);
-  } else {
-    next();
-  }
-};
-
-
+ 
 app.use("/listings", listings);
-
-
-// ===============================
-// Review Routes
-// ===============================
-
-// Create Review - Add review to listing
-app.post("/listings/:id/reviews", validateReview, wrapAsync(async (req, res) => {
-  let listing = await Listing.findById(req.params.id);
-  let newReview = new Review(req.body.review);
-
-  // Associate review with listing
-  listing.reviews.push(newReview);
-
-  await newReview.save();
-  await listing.save();
-
-  res.redirect(`/listings/${listing._id}`);
-}));
-
-// Delete Review - Remove review from listing and database
-app.delete("/listings/:id/reviews/:reviewId", wrapAsync(async (req, res) => {
-  let { id, reviewId } = req.params;
-
-  // Remove review reference from listing
-  await Listing.findByIdAndUpdate(id, { $pull: { reviews: reviewId } });
-
-  // Delete review document
-  await Review.findByIdAndDelete(reviewId);
-
-  res.redirect(`/listings/${id}`);
-}));
+app.use("/listings/:id/reviews", reviews);
 
 
 // ===============================
