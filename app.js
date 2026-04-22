@@ -13,8 +13,9 @@ const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError"); // Custom error handler
 
 
-const listings = require("./routes/listing")
-const reviews = require("./routes/review");
+const listingRouter = require("./routes/listing")
+const reviewRouter = require("./routes/review");
+const userRouter = require("./routes/user");
 
 
 // ===============================
@@ -63,8 +64,9 @@ app.get("/", (req, res) => {
   res.send("Server is running successfully!");
 });
  
-app.use("/listings", listings);
-app.use("/listings/:id/reviews", reviews);
+app.use("/listings", listingRouter);
+app.use("/listings/:id/reviews", reviewRouter);
+app.use("/users", userRouter);
 
 
 // ===============================
