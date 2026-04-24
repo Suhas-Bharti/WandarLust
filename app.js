@@ -18,6 +18,7 @@ const reviews = require("./routes/review");
 
 // Session and Flash for user feedback
 const session = require("express-session");
+const flash = require("connect-flash");
 
 
 // ===============================
@@ -56,6 +57,9 @@ app.engine("ejs", ejsMate);
 // Serve static files
 app.use(express.static(path.join(__dirname, "/public")));
 
+// ===============================
+// Session Configuration
+// ===============================
 const sessionOptions = {
   secret: "mysupersecretcode",
   resave: false,
@@ -68,18 +72,22 @@ const sessionOptions = {
   }
 };
 
-app.use(session(sessionOptions));
-
-
-// ===============================
-// Routes
-// ===============================
-
 // Home Route
 app.get("/", (req, res) => {
   res.send("Server is running successfully!");
 });
- 
+
+// Use session and flash middleware
+app.use(session(sessionOptions));
+app.use(flash());
+
+// Middleware to set flash messages in response locals
+app.use((req, res, next) => {
+  res.locals.success = req.flash("success");
+  res.locals.error = req.flash("error");
+  next();
+});
+
 app.use("/listings", listings);
 app.use("/listings/:id/reviews", reviews);
 
