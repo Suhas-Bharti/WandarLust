@@ -16,6 +16,9 @@ const ExpressError = require("./utils/ExpressError"); // Custom error handler
 const listings = require("./routes/listing")
 const reviews = require("./routes/review");
 
+// Session and Flash for user feedback
+const session = require("express-session");
+
 
 // ===============================
 // App Configuration
@@ -52,6 +55,14 @@ app.engine("ejs", ejsMate);
 
 // Serve static files
 app.use(express.static(path.join(__dirname, "/public")));
+
+const sessionOptions = {
+  secret: "mysupersecretcode",
+  resave: false,
+  saveUninitialized: true,  
+};
+
+app.use(session(sessionOptions));
 
 
 // ===============================
