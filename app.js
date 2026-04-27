@@ -19,6 +19,7 @@ const reviews = require("./routes/review");
 // Session and Flash for user feedback
 const session = require("express-session");
 const flash = require("connect-flash");
+const passport = require("passport");
 
 
 // ===============================
@@ -80,6 +81,13 @@ app.get("/", (req, res) => {
 // Use session and flash middleware
 app.use(session(sessionOptions));
 app.use(flash());
+
+// Initialize Passport for authentication
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(new LocalStrategy(User.authenticate())); // Use the authentication strategy provided by passport-local-mongoose
+passport.serializeUser(User.serializeUser()); // Serialize user information into the session
+passport.deserializeUser(User.deserializeUser());  // Deserialize user information from the session on subsequent requests
 
 // Middleware to set flash messages in response locals
 app.use((req, res, next) => {
