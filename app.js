@@ -13,8 +13,9 @@ const ejsMate = require("ejs-mate");
 const ExpressError = require("./utils/ExpressError"); // Custom error handler
 
 
-const listings = require("./routes/listing")
-const reviews = require("./routes/review");
+const listingRouter = require("./routes/listing")
+const reviewRouter = require("./routes/review");
+const userRouter = require("./routes/user");
 
 // Session and Flash for user feedback
 const session = require("express-session");
@@ -98,8 +99,9 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use("/listings", listings);
-app.use("/listings/:id/reviews", reviews);
+app.use("/listings", listingRouter);
+app.use("/listings/:id/reviews", reviewRouter);
+app.use("/", userRouter);
 
 
 // ===============================
