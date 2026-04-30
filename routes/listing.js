@@ -4,6 +4,7 @@ const wrapAsync = require("../utils/wrapAsync");     // Handles async errors
 const ExpressError = require("../utils/ExpressError"); // Custom error handler
 const { listingSchema } = require("../schema"); // Joi validation schemas
 const Listing = require("../models/listing");
+const { isLoggedIn } = require("../middleware"); // Authentication middleware
 
 // ===============================
 // Server-Side Validation Middleware
@@ -30,7 +31,7 @@ router.get("/", async (req, res) => {
 });
 
 // Create Route - Show form to create new listing
-router.get("/new", (req, res) => {
+router.get("/new", isLoggedIn, (req, res) => {
     res.render("listings/new.ejs");
 });
 
@@ -46,7 +47,7 @@ router.get("/:id", wrapAsync(async (req, res) => {
 }));
 
 // Create Route - Add new listing to database
-router.post("/", validateListing, wrapAsync(async (req, res) => {
+router.post("/", isLoggedIn, validateListing, wrapAsync(async (req, res) => {
     const newListing = new Listing(req.body.listing);
     await newListing.save();
     req.flash("success", "New listing created!");
@@ -54,7 +55,7 @@ router.post("/", validateListing, wrapAsync(async (req, res) => {
 }));
 
 // Edit Route - Show edit form for listing
-router.get("/:id/edit", wrapAsync(async (req, res) => {
+router.get("/:id/edit", isLoggedIn, wrapAsync(async (req, res) => {
     let { id } = req.params;
     const listing = await Listing.findById(id);
     if(!listing) {
@@ -65,7 +66,7 @@ router.get("/:id/edit", wrapAsync(async (req, res) => {
 }));
 
 // Update Route - Update listing details
-router.put("/:id", validateListing, wrapAsync(async (req, res) => {
+router.put("/:id", isLoggedIn, validateListing, wrapAsync(async (req, res) => {
     let { id } = req.params;
     await Listing.findByIdAndUpdate(id, { ...req.body.listing });
     req.flash("success", "Listing updated successfully!");
@@ -73,7 +74,7 @@ router.put("/:id", validateListing, wrapAsync(async (req, res) => {
 }));
 
 // Delete Route - Remove listing (Cascade delete handled in model middleware)
-router.delete("/:id", wrapAsync(async (req, res) => {
+router.delete("/:id", isLoggedIn, wrapAsync(async (req, res) => {
     let { id } = req.params;
     let deletedListing = await Listing.findByIdAndDelete(id);
     req.flash("success", "Listing deleted successfully!");
