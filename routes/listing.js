@@ -38,17 +38,20 @@ router.get("/new", isLoggedIn, (req, res) => {
 // Show Route - Display single listing with populated reviews
 router.get("/:id", wrapAsync(async (req, res) => {
     let { id } = req.params;
-    const listing = await Listing.findById(id).populate("reviews");
+    const listing = await Listing.findById(id)
+    .populate("reviews").populate("owner");
     if(!listing) {
         req.flash("error", "Listing not found!");
         return res.redirect("/listings");
     }
+    console.log(listing);
     res.render("listings/show.ejs", { listing });
 }));
 
 // Create Route - Add new listing to database
 router.post("/", isLoggedIn, validateListing, wrapAsync(async (req, res) => {
     const newListing = new Listing(req.body.listing);
+    newListing.owner = req.user._id; // Set owner to currently logged in user
     await newListing.save();
     req.flash("success", "New listing created!");
     res.redirect("/listings");
