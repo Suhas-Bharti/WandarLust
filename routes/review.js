@@ -7,20 +7,9 @@ const router = express.Router({mergeParams: true});
 // Custom utilities
 const wrapAsync = require("../utils/wrapAsync");     // Handles async errors
 const ExpressError = require("../utils/ExpressError"); // Custom error handler
-const { reviewSchema } = require("../schema"); // Joi validation
 const Review = require("../models/review");
+const {validateReview} = require("../middleware"); // Validation middleware
 
-
-// Validate Review data using Joi
-const validateReview = (req, res, next) => {
-  let { error } = reviewSchema.validate(req.body);
-  if (error) {
-    let errMsg = error.details.map((el) => el.message).join(",");
-    throw new ExpressError(400, errMsg);
-  } else {
-    next();
-  }
-};
 
 // ===============================
 // Review Routes

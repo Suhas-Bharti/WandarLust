@@ -1,24 +1,12 @@
 const express = require("express");
 const router = express.Router();
-const wrapAsync = require("../utils/wrapAsync");     // Handles async errors
-const ExpressError = require("../utils/ExpressError"); // Custom error handler
+
+const wrapAsync = require("../utils/wrapAsync");
 const { listingSchema } = require("../schema"); // Joi validation schemas
 const Listing = require("../models/listing");
-const { isLoggedIn } = require("../middleware"); // Authentication middleware
+const { isLoggedIn, isOwner, validateListing } = require("../middleware"); // Authentication middleware
 
-// ===============================
-// Server-Side Validation Middleware
-// ===============================
-// Validate Listing data using Joi
-const validateListing = (req, res, next) => {
-  let { error } = listingSchema.validate(req.body);
-  if (error) {
-    let errMsg = error.details.map((el) => el.message).join(",");
-    throw new ExpressError(400, errMsg);
-  } else {
-    next();
-  }
-};
+
 
 // ===============================
 // Listing Routes (CRUD)
@@ -58,7 +46,7 @@ router.post("/", isLoggedIn, validateListing, wrapAsync(async (req, res) => {
 }));
 
 // Edit Route - Show edit form for listing
-router.get("/:id/edit", isLoggedIn, wrapAsync(async (req, res) => {
+router.get("/:id/edit", isLoggedIn, isOwner, wrapAsync(async (req, res) => {
     let { id } = req.params;
     const listing = await Listing.findById(id);
     if(!listing) {
@@ -69,7 +57,7 @@ router.get("/:id/edit", isLoggedIn, wrapAsync(async (req, res) => {
 }));
 
 // Update Route - Update listing details
-router.put("/:id", isLoggedIn, validateListing, wrapAsync(async (req, res) => {
+router.put("/:id", isLoggedIn, isOwner, validateListing, wrapAsync(async (req, res) => {
     let { id } = req.params;
     await Listing.findByIdAndUpdate(id, { ...req.body.listing });
     req.flash("success", "Listing updated successfully!");
@@ -77,7 +65,7 @@ router.put("/:id", isLoggedIn, validateListing, wrapAsync(async (req, res) => {
 }));
 
 // Delete Route - Remove listing (Cascade delete handled in model middleware)
-router.delete("/:id", isLoggedIn, wrapAsync(async (req, res) => {
+router.delete("/:id", isLoggedIn, isOwner, wrapAsync(async (req, res) => {
     let { id } = req.params;
     let deletedListing = await Listing.findByIdAndDelete(id);
     req.flash("success", "Listing deleted successfully!");
