@@ -7,7 +7,12 @@ const reviewSchema = new Schema({
         type: Number,
         min: 1,
         max: 5
+    },
+
+    author: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
     }
-}, { timestamps: true });   // ✅ automatic createdAt
+}, { timestamps: true });
 
 module.exports = mongoose.model("Review", reviewSchema);

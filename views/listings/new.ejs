@@ -6,33 +6,33 @@
             <div class="form-card col-8 offset-2">
                 <form method="post" action="/listings" novalidate class="needs-validation">
                     <div class="mb-3">
-                        <label for="title" class="form-lable fw-semibold">Title</label>
+                        <label for="title" class="form-label fw-semibold">Title</label>
                         <input type="text" id="title" name="listing[title]" class="form-control custom-input" placeholder="Enter listing title"
                             required>
                         <div class="valid-feedback">Title looks good!</div>
                         <div class="invalid-feedback">Please enter a valid title.</div>
                     </div>
                     <div class="mb-3">
-                        <label for="description" class="form-lable fw-semibold">Description</label>
+                        <label for="description" class="form-label fw-semibold">Description</label>
                         <textarea id="description" name="listing[description]" rows="4" class="form-control custom-input"
                             placeholder="Enter listing description" required></textarea>
                         <div class="valid-feedback">Description looks good!</div>
                         <div class="invalid-feedback">Please enter a short description.</div>
                     </div>
                     <div class="mb-3">
-                        <label for="image" class="form-lable fw-semibold">Image URL</label>
+                        <label for="image" class="form-label fw-semibold">Image URL</label>
                         <input type="text" id="image" name="listing[image]" class="form-control custom-input" placeholder="Paste image link here"/>
                     </div>
                     <div class="row">
                         <div class="col-md-4 mb-3 ">
-                            <label for="price" class="form-lable fw-semibold">Price</label>
+                            <label for="price" class="form-label fw-semibold">Price</label>
                             <input type="number" id="price" name="listing[price]" class="form-control custom-input" placeholder="₹1200"
                                 required />
                             <div class="valid-feedback">Price looks good!</div>
                             <div class="invalid-feedback">Price should be valid.</div>
                         </div>
                         <div class="col-md-8 mb-3">
-                            <label for="location" class="form-lable fw-semibold">Location</label>
+                            <label for="location" class="form-label fw-semibold">Location</label>
                             <input type="text" id="location" name="listing[location]" class="form-control custom-input"
                                 placeholder="Enter city/location" required />
                             <div class="valid-feedback">Location looks good!</div>
@@ -40,7 +40,7 @@
                         </div>
                     </div>
                     <div class="mb-5">
-                        <label for="country" class="form-lable fw-semibold">Country</label>
+                        <label for="country" class="form-label fw-semibold">Country</label>
                         <input type="text" id="country" name="listing[country]" class="form-control custom-input" placeholder="Enter country name"
                             required />
                         <div class="valid-feedback">Country looks good!</div>

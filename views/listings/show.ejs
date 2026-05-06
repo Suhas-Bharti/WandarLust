@@ -12,12 +12,14 @@
 
                     <img src="<%= listing.image %>" class="img-fluid show-image mb-4" alt="listing_image">
 
-                    <p class="card-text"> Owend by:
+                    <p class="card-text"> Owned by:
                         <span class="fw-semibold">
-                            <i><%= listing.owner.username %></i>
+                            <i>
+                                <%= listing.owner.username %>
+                            </i>
                         </span>
                     </p>
-                       
+
                     <p class="card-text">
                         <%= listing.description %>
                     </p>
@@ -31,75 +33,79 @@
                         <%= listing.location %>, <%= listing.country %>
                     </p>
 
- 
-                    <div class="d-flex gap-5 mt-4 mb-4">
-                        <form method="get" action="/listings/<%= listing._id %>/edit">
-                            <button type="submit" class="btn btn-dark px-4">
-                                Edit
-                            </button>
-                        </form>
+                    <% if(currentUser && listing.owner._id.equals(currentUser._id)) { %>
+                        <div class="d-flex gap-5 mt-4 mb-4">
+                            <form method="get" action="/listings/<%= listing._id %>/edit">
+                                <button type="submit" class="btn btn-dark px-4">
+                                    Edit
+                                </button>
+                            </form>
 
-                        <form method="post" action="/listings/<%= listing._id %>?_method=DELETE">
-                            <button type="submit" class="btn btn-danger px-4">
-                                Delete
-                            </button>
-                        </form>
-                    </div>
-                    
-                    <hr />
-
-                    <!-- Create Review form -->
-                    <div class="col-8 offset-2 mt-4">
-                        <div class="card p-4 ">
-
-                            <h4 class="mb-4 fw-bold text-center" style="color:#fe424d;">
-                                Leave a Review
-                            </h4>
-
-                            <form action="/listings/<%= listing._id %>/reviews" method="post" class="needs-validation"
-                                novalidate>
-
-                                <!-- Rating Section -->
-                                <div class="mb-4 text-center">
-                                    <lable for="rating" class="form-lable fw-semibold mb-2">
-                                        Rating
-                                    </lable>
-
-                                    <input type="range" min="1" max="5" step="1" value="3" id="rating"
-                                        name="review[rating]" class="form-range w-75 mx-auto d-block" />
-
-                                    <!-- Live Rating Display -->
-                                    <div class="mt-2">
-                                        <span class="badge bg-danger fs-6 px-3 py-2 rounded-pill">
-                                            <span id="ratingValue">3</span> / 5 ⭐
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <!-- Comment Section -->
-                                <div class="mb-4">
-                                    <label for="comment" class="form-lable fw-semibold mb-2">
-                                        Share your experience
-                                    </label>
-
-                                    <textarea name="review[comment]" id="comment" rows="5"
-                                        class="form-control rounded-3 shadow-sm"
-                                        placeholder="Write your honest review here..." required></textarea>
-
-                                    <div class="invalid-feedback">
-                                        Please write a review before submitting.
-                                    </div>
-                                </div>
-
-                                <!-- Submit Button -->
-                                <div class="text-center">
-                                    <button class="btn btn-danger px-5 py-2 rounded-pill shadow-sm fw-semibold">
-                                        Submit Review
-                                    </button>
-                                </div>
+                            <form method="post" action="/listings/<%= listing._id %>?_method=DELETE">
+                                <button type="submit" class="btn btn-danger px-4">
+                                    Delete
+                                </button>
                             </form>
                         </div>
-                    </div>
+                        <% } %>
+
+
+
+                            <!-- Create Review form -->
+                            <div class="col-8 offset-2 mt-1">
+                                <!-- Only show review form if user is logged in -->
+                                <% if(currentUser) { %>
+                                    <div class="card p-4 ">
+                                        <h4 class=" mb-4 fw-bold text-center" style="color:#fe424d;">
+                                            Leave a Review
+                                        </h4>
+
+                                        <form action="/listings/<%= listing._id %>/reviews" method="post"
+                                            class="needs-validation" novalidate>
+
+                                            <!-- Rating Section -->
+                                            <div class="mb-4 text-center">
+                                                <label for="rating" class="form-label fw-semibold mb-2">
+                                                    Rating
+                                                </label>
+
+                                                <input type="range" min="1" max="5" step="1" value="3" id="rating"
+                                                    name="review[rating]" class="form-range w-75 mx-auto d-block" />
+
+                                                <!-- Live Rating Display -->
+                                                <div class="mt-2">
+                                                    <span class="badge bg-danger fs-6 px-3 py-2 rounded-pill">
+                                                        <span id="ratingValue">3</span> / 5 ⭐
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <!-- Comment Section -->
+                                            <div class="mb-4">
+                                                <label for="comment" class="form-label fw-semibold mb-2">
+                                                    Share your experience
+                                                </label>
+
+                                                <textarea name="review[comment]" id="comment" rows="5"
+                                                    class="form-control rounded-3 shadow-sm"
+                                                    placeholder="Write your honest review here..." required></textarea>
+
+                                                <div class="invalid-feedback">
+                                                    Please write a review before submitting.
+                                                </div>
+                                            </div>
+
+                                            <!-- Submit Button -->
+                                            <div class="text-center">
+                                                <button
+                                                    class="btn btn-danger px-5 py-2 rounded-pill shadow-sm fw-semibold">
+                                                    Submit Review
+                                                </button>
+                                            </div>
+                                        </form>
+                                        <% } %>
+                                    </div>
+                            </div>
                 </div>
             </div>
         </div>
@@ -136,7 +142,8 @@
                                                             style="width:40px;height:40px;font-size:14px;">
                                                             U
                                                         </div>
-                                                        <span class="fw-semibold">Anonymous</span>
+                                                        <span class="fw-semibold"> @<%= review.author.username %>
+                                                        </span>
                                                     </div>
 
                                                     <!-- Time -->
@@ -158,9 +165,10 @@
                                                 <%= review.comment %>
                                             </p>
                                             <!--Delete Review-->
-                                                <form class="mt-3" method="post" action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE ">
-                                                    <button type="submit" class="btn btn-sm btn-dark">Delete</button>
-                                                </form>
+                                            <form class="mt-3" method="post"
+                                                action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
+                                                <button type="submit" class="btn btn-sm btn-dark">Delete</button>
+                                            </form>
                                         </div>
                                     </div>
                                 </div>

@@ -8,7 +8,8 @@ const router = express.Router({mergeParams: true});
 const wrapAsync = require("../utils/wrapAsync");     // Handles async errors
 const ExpressError = require("../utils/ExpressError"); // Custom error handler
 const Review = require("../models/review");
-const {validateReview} = require("../middleware"); // Validation middleware
+const {validateReview, isLoggedIn, isReviewAuthor} = require("../middleware"); // Validation middleware
+const Listing = require("../models/listing"); // For associating reviews with listings
 
 
 // ===============================
@@ -16,9 +17,12 @@ const {validateReview} = require("../middleware"); // Validation middleware
 // ===============================
 
 // Create Review - Add review to listing
-router.post("/", validateReview, wrapAsync(async (req, res) => {
+router.post("/", validateReview, isLoggedIn, wrapAsync(async (req, res) => {
   let listing = await Listing.findById(req.params.id);
   let newReview = new Review(req.body.review);
+
+  newReview.author = req.user._id;
+  console.log("New Review Author ID:", newReview.author); // Debugging line
 
   // Associate review with listing
   listing.reviews.push(newReview);
@@ -32,7 +36,7 @@ router.post("/", validateReview, wrapAsync(async (req, res) => {
 }));
 
 // Delete Review - Remove review from listing and database
-router.delete("/:reviewId", wrapAsync(async (req, res) => {
+router.delete("/:reviewId", isLoggedIn, isReviewAuthor, wrapAsync(async (req, res) => {
   let { id, reviewId } = req.params;
 
   // Remove review reference from listing
