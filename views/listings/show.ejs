@@ -1,184 +1,312 @@
 <% layout("/layouts/boilerplate") %>
 
-    <body>
-        <h2 class="mb-4 fw-bold text-center" style="color:#fe424d;">
-            <%= listing.title %>
-        </h2>
+<body>
 
-        <div class="row mb-5">
-            <div class="col col-md-8 offset-md-2">
+    <!-- LISTING TITLE -->
+    <h2 class="mb-4 fw-bold text-center text-danger">
+        <%= listing.title %>
+    </h2>
 
-                <div class=" card p-3 shadow-sm">
+    <!-- LISTING SECTION -->
+    <div class="row mb-5">
+        <div class="col-md-8 offset-md-2">
 
-                    <img src="<%= listing.image %>" class="img-fluid show-image mb-4" alt="listing_image">
+            <div class="card border-0 shadow-lg rounded-4 overflow-hidden">
 
-                    <p class="card-text"> Owned by:
+                <!-- IMAGE -->
+                <img src="<%= listing.image %>"
+                    class="img-fluid show-image"
+                    alt="listing_image">
+
+                <div class="card-body p-4">
+
+                    <!-- OWNER -->
+                    <p class="card-text mb-2">
+                        Owned by:
                         <span class="fw-semibold">
-                            <i>
-                                <%= listing.owner.username %>
-                            </i>
+                            <i>@<%= listing.owner.username %></i>
                         </span>
                     </p>
 
-                    <p class="card-text">
+                    <!-- DESCRIPTION -->
+                    <p class="card-text text-muted">
                         <%= listing.description %>
                     </p>
 
-                    <h5 class="fw-bold text-danger mb-2">
+                    <!-- PRICE -->
+                    <h4 class="fw-bold text-danger mb-3">
                         ₹<%= listing.price.toLocaleString("en-IN") %>
-                    </h5>
+                    </h4>
 
-                    <p class=" card-text mb-1">
+                    <!-- LOCATION -->
+                    <p class="card-text">
                         <i class="bi bi-geo-alt-fill text-danger"></i>
                         <%= listing.location %>, <%= listing.country %>
                     </p>
 
+                    <!-- EDIT & DELETE -->
                     <% if(currentUser && listing.owner._id.equals(currentUser._id)) { %>
-                        <div class="d-flex gap-5 mt-4 mb-4">
-                            <form method="get" action="/listings/<%= listing._id %>/edit">
-                                <button type="submit" class="btn btn-dark px-4">
+
+                        <div class="d-flex gap-3 mt-4">
+
+                            <form method="get"
+                                action="/listings/<%= listing._id %>/edit">
+
+                                <button class="btn btn-dark rounded-pill px-4">
                                     Edit
                                 </button>
+
                             </form>
 
-                            <form method="post" action="/listings/<%= listing._id %>?_method=DELETE">
-                                <button type="submit" class="btn btn-danger px-4">
+                            <form method="post"
+                                action="/listings/<%= listing._id %>?_method=DELETE">
+
+                                <button class="btn btn-danger rounded-pill px-4">
                                     Delete
                                 </button>
+
                             </form>
+
                         </div>
-                        <% } %>
 
+                    <% } %>
 
+                    <hr class="my-4">
 
-                            <!-- Create Review form -->
-                            <div class="col-8 offset-2 mt-1">
-                                <!-- Only show review form if user is logged in -->
-                                <% if(currentUser) { %>
-                                    <div class="card p-4 ">
-                                        <h4 class=" mb-4 fw-bold text-center" style="color:#fe424d;">
-                                            Leave a Review
-                                        </h4>
+                    <!-- REVIEW FORM -->
+                    <% if(currentUser) { %>
 
-                                        <form action="/listings/<%= listing._id %>/reviews" method="post"
-                                            class="needs-validation" novalidate>
+                        <div class="card border-0 shadow-sm rounded-4 p-4 bg-light">
 
-                                            <!-- Rating Section -->
-                                            <div class="mb-4 text-center">
-                                                <label for="rating" class="form-label fw-semibold mb-2">
-                                                    Rating
-                                                </label>
+                            <h4 class="fw-bold text-center text-danger mb-4">
+                                Leave a Review
+                            </h4>
 
-                                                <input type="range" min="1" max="5" step="1" value="3" id="rating"
-                                                    name="review[rating]" class="form-range w-75 mx-auto d-block" />
+                            <form action="/listings/<%= listing._id %>/reviews"
+                                method="post">
 
-                                                <!-- Live Rating Display -->
-                                                <div class="mt-2">
-                                                    <span class="badge bg-danger fs-6 px-3 py-2 rounded-pill">
-                                                        <span id="ratingValue">3</span> / 5 ⭐
-                                                    </span>
-                                                </div>
-                                            </div>
+                                <!-- RATING -->
+                                <div class="mb-4 text-center">
 
-                                            <!-- Comment Section -->
-                                            <div class="mb-4">
-                                                <label for="comment" class="form-label fw-semibold mb-2">
-                                                    Share your experience
-                                                </label>
+                                    <label for="rating"
+                                        class="form-label fw-semibold">
+                                        Rating
+                                    </label>
 
-                                                <textarea name="review[comment]" id="comment" rows="5"
-                                                    class="form-control rounded-3 shadow-sm"
-                                                    placeholder="Write your honest review here..." required></textarea>
+                                    <input type="range"
+                                        min="1"
+                                        max="5"
+                                        step="1"
+                                        value="3"
+                                        id="rating"
+                                        name="review[rating]"
+                                        class="form-range w-75 mx-auto">
 
-                                                <div class="invalid-feedback">
-                                                    Please write a review before submitting.
-                                                </div>
-                                            </div>
+                                    <div class="mt-2">
 
-                                            <!-- Submit Button -->
-                                            <div class="text-center">
-                                                <button
-                                                    class="btn btn-danger px-5 py-2 rounded-pill shadow-sm fw-semibold">
-                                                    Submit Review
-                                                </button>
-                                            </div>
-                                        </form>
-                                        <% } %>
+                                        <span class="badge bg-danger rounded-pill px-3 py-2 fs-6">
+                                            <span id="ratingValue">3</span> ⭐
+                                        </span>
+
                                     </div>
-                            </div>
-                </div>
-            </div>
-        </div>
-        <!-- Show Guest Reviews -->
-        <div class="row mb-5">
-            <div class="col-md-10 offset-md-1 border-top mt-5 pt-4">
 
-                <h4 class="fw-bold mb-4 text-center" style="color:#fe424d;">
-                    Guest Reviews
-                </h4>
+                                </div>
 
-                <% if (!listing.reviews || listing.reviews.length===0) { %>
+                                <!-- COMMENT -->
+                                <div class="mb-4">
 
-                    <p class="text-muted text-center">
-                        No reviews yet. Be the first to review!
-                    </p>
+                                    <label for="comment"
+                                        class="form-label fw-semibold">
+
+                                        Your Experience
+
+                                    </label>
+
+                                    <textarea name="review[comment]"
+                                        id="comment"
+                                        rows="4"
+                                        class="form-control rounded-3"
+                                        placeholder="Write your review here..."
+                                        required></textarea>
+
+                                </div>
+
+                                <!-- BUTTON -->
+                                <div class="text-center">
+
+                                    <button class="btn btn-danger rounded-pill px-5">
+                                        Submit Review
+                                    </button>
+
+                                </div>
+
+                            </form>
+
+                        </div>
 
                     <% } else { %>
 
-                        <div class="row g-4">
+                        <!-- LOGIN MESSAGE -->
+                        <div class="text-center mt-4">
 
-                            <% for (let review of listing.reviews) { %>
+                            <p class="text-muted mb-2">
+                                Login to leave a review
+                            </p>
 
-                                <div class="col-12 col-md-6">
-                                    <div class="card shadow-sm border-0 rounded-4 h-100 review-card">
-                                        <div class="card-body">
+                            <a href="/login"
+                                class="btn btn-outline-danger rounded-pill px-4">
 
-                                            <!-- Header Section -->
-                                            <div class="d-flex justify-content-between align-items-start mb-2">
+                                Login
 
-                                                <div>
-                                                    <div class="d-flex align-items-center gap-2">
-                                                        <div class="rounded-circle bg-danger text-white d-flex justify-content-center align-items-center"
-                                                            style="width:40px;height:40px;font-size:14px;">
-                                                            U
-                                                        </div>
-                                                        <span class="fw-semibold"> @<%= review.author.username %>
-                                                        </span>
-                                                    </div>
-
-                                                    <!-- Time -->
-                                                    <small class="text-muted">
-                                                        <%= review.createdAt ? review.createdAt.toDateString()
-                                                            : "Recently" %>
-                                                    </small>
-                                                </div>
-
-                                                <!-- Rating -->
-                                                <span class="badge bg-danger px-3 py-2 rounded-pill">
-                                                    <%= review.rating %> ⭐
-                                                </span>
-                                            </div>
-
-                                            <!-- Comment -->
-                                            <p class="text-muted mt-2 mb-0"
-                                                style="font-size: 0.95rem; line-height:1.6;">
-                                                <%= review.comment %>
-                                            </p>
-                                            <!--Delete Review-->
-                                            <form class="mt-3" method="post"
-                                                action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
-                                                <button type="submit" class="btn btn-sm btn-dark">Delete</button>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <% } %>
+                            </a>
 
                         </div>
 
-                        <% } %>
+                    <% } %>
 
+                </div>
             </div>
         </div>
-    </body>
+    </div>
+
+    <!-- REVIEWS SECTION -->
+    <div class="row mb-5">
+
+        <div class="col-md-10 offset-md-1">
+
+            <h3 class="text-center fw-bold text-danger mb-5">
+                Guest Reviews
+            </h3>
+
+            <% if(!listing.reviews || listing.reviews.length === 0) { %>
+
+                <p class="text-center text-muted">
+                    No reviews yet. Be the first to review!
+                </p>
+
+            <% } else { %>
+
+                <div class="row g-4">
+
+                    <% for(let review of listing.reviews) { %>
+
+                        <div class="col-md-6 d-flex">
+
+                            <!-- REVIEW CARD -->
+                            <div class="card border-0 shadow-sm rounded-4 p-3 w-100 d-flex flex-column">
+
+                                <div class="card-body d-flex flex-column justify-content-between">
+
+                                    <!-- TOP -->
+                                    <div>
+
+                                        <!-- USER + RATING -->
+                                        <div class="d-flex justify-content-between align-items-start mb-3">
+
+                                            <div>
+
+                                                <h5 class="mb-1 fw-bold">
+                                                    @<%= review.author ? review.author.username : "Anonymous" %>
+                                                </h5>
+
+                                                <small class="text-muted">
+
+                                                    <%= review.createdAt
+                                                        ? review.createdAt.toDateString()
+                                                        : "Recently" %>
+
+                                                </small>
+
+                                            </div>
+
+                                            <span class="badge bg-danger rounded-pill px-3 py-2">
+
+                                                <%= review.rating %> ⭐
+
+                                            </span>
+
+                                        </div>
+
+                                        <!-- COMMENT -->
+                                        <p class="text-muted review-comment">
+
+                                            <%= review.comment %>
+
+                                        </p>
+
+                                    </div>
+
+                                    <!-- DELETE BUTTON -->
+                                    <% if(currentUser && review.author &&
+                                        review.author._id.equals(currentUser._id)) { %>
+
+                                        <form method="post"
+                                            action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE">
+
+                                            <button class="btn btn-sm btn-dark rounded-pill px-3 mt-3">
+                                                Delete
+                                            </button>
+
+                                        </form>
+
+                                    <% } %>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    <% } %>
+
+                </div>
+
+            <% } %>
+
+        </div>
+
+    </div>
+
+    <!-- RATING SCRIPT -->
+    <script>
+
+        const rating = document.getElementById("rating");
+        const ratingValue = document.getElementById("ratingValue");
+
+        if (rating) {
+
+            rating.addEventListener("input", () => {
+
+                ratingValue.textContent = rating.value;
+
+            });
+
+        }
+
+    </script>
+
+    <!-- CUSTOM CSS -->
+    <style>
+
+        .show-image {
+            height: 420px;
+            object-fit: cover;
+        }
+
+        .review-comment {
+            line-height: 1.7;
+            font-size: 0.95rem;
+            word-break: break-word;
+        }
+
+        .card {
+            transition: 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+        }
+
+    </style>
+
+</body>
