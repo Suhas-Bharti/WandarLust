@@ -5,49 +5,19 @@ const User = require("../models/user");
 const passport = require("passport");
 const { saveRedirectUrl } = require('../middleware');
 
-router.get("/signup", (req, res) => {
-    res.render("users/signup");
-});
+const userController = require("../controller/users"); // Import user controller for handling signup logic
 
-router.post("/signup", wrapAsync(async (req, res) => {
-    try {
-        let { username, email, password } = req.body;
-        const newUser = new User({ username, email });
-        const registeredUser = await User.register(newUser, password);
-        console.log(registeredUser);
-        req.login(registeredUser, (err) => {
-            if (err) {
-                return next(err)
-            };
-            req.flash("success", "Welcome to WandarLust!");
-            res.redirect("/listings");
-        });
-    } catch (e) {
-        req.flash("error", e.message);
-        res.redirect("/signup");
-    }
+router.get("/signup", userController.renderSignupForm);
 
-}));
+// Handle user registration - signup routes
+router.post("/signup", wrapAsync(userController.signup));
+
+// Login routes
+router.get("/login", userController.renderLoginForm);
+
+router.post("/login", saveRedirectUrl, passport.authenticate("local", {failureRedirect: "/login", failureFlash: true}), userController.login);
 
 
-router.get("/login", (req, res) => {
-    res.render("users/login");
-});
-
-router.post("/login", saveRedirectUrl, passport.authenticate("local", {failureRedirect: "/login", failureFlash: true}), async (req, res) => {
-    req.flash("success", "Welcome back!");
-    res.redirect(res.locals.redirectUrl || "/listings");
-});
-
-
-router.get("/logout", (req, res, next) => {
-    req.logout((err) => {
-        if (err) {
-            return next(err); 
-        }
-        req.flash("success", "You have been logged out!");
-        res.redirect("/listings");
-    });
-});
+router.get("/logout", userController.logout);
 
 module.exports = router;
