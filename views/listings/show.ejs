@@ -76,41 +76,28 @@
                     <!-- REVIEW FORM -->
                     <% if(currentUser) { %>
 
-                        <div class="card border-0 shadow-sm rounded-4 p-4 bg-light">
+                        <h4 class="fw-bold text-center text-danger mb-4"> Leave a Review </h4>
 
-                            <h4 class="fw-bold text-center text-danger mb-4">
-                                Leave a Review
-                            </h4>
-
-                            <form action="/listings/<%= listing._id %>/reviews"
-                                method="post">
+                        <form action="/listings/<%= listing._id %>/reviews" method="post" novalidate class="needs-validation" >
 
                                 <!-- RATING -->
-                                <div class="mb-4 text-center">
-
-                                    <label for="rating"
-                                        class="form-label fw-semibold">
-                                        Rating
-                                    </label>
-
-                                    <input type="range"
-                                        min="1"
-                                        max="5"
-                                        step="1"
-                                        value="3"
-                                        id="rating"
-                                        name="review[rating]"
-                                        class="form-range w-75 mx-auto">
-
-                                    <div class="mt-2">
-
-                                        <span class="badge bg-danger rounded-pill px-3 py-2 fs-6">
-                                            <span id="ratingValue">3</span> ⭐
-                                        </span>
-
-                                    </div>
-
+                                <div class="mt-3">
+                                    <label for="rating" class="form-label fw-semibold"> Rating </label>
+                                    <fieldset class="starability-slot">
+                                        <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />   
+                                        <input type="radio" id="first-rate1" name="review[rating]" value="1" />
+                                        <label for="first-rate1" title="Terrible">1 star</label>
+                                        <input type="radio" id="first-rate2" name="review[rating]" value="2" />
+                                        <label for="first-rate2" title="Not good">2 stars</label>
+                                        <input type="radio" id="first-rate3" name="review[rating]" value="3" />
+                                        <label for="first-rate3" title="Average">3 stars</label>
+                                        <input type="radio" id="first-rate4" name="review[rating]" value="4" />
+                                        <label for="first-rate4" title="Very good">4 stars</label>
+                                        <input type="radio" id="first-rate5" name="review[rating]" value="5" />
+                                        <label for="first-rate5" title="Amazing">5 stars</label>
+                                    </fieldset>
                                 </div>
+
 
                                 <!-- COMMENT -->
                                 <div class="mb-4">
@@ -267,46 +254,179 @@
 
     </div>
 
-    <!-- RATING SCRIPT -->
-    <script>
-
-        const rating = document.getElementById("rating");
-        const ratingValue = document.getElementById("ratingValue");
-
-        if (rating) {
-
-            rating.addEventListener("input", () => {
-
-                ratingValue.textContent = rating.value;
-
-            });
-
-        }
-
-    </script>
 
     <!-- CUSTOM CSS -->
-    <style>
+<style>
 
-        .show-image {
-            height: 420px;
-            object-fit: cover;
+    body{
+        background: #f8f9fa;
+    }
+
+    /* LISTING IMAGE */
+    .show-image {
+        height: 460px;
+        width: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+
+    .card:hover .show-image{
+        transform: scale(1.02);
+    }
+
+    /* MAIN CARD */
+    .card {
+        border: none !important;
+        border-radius: 28px !important;
+        overflow: hidden;
+        background: #fff;
+        transition: all 0.35s ease;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 45px rgba(0,0,0,0.12) !important;
+    }
+
+    /* TITLE */
+    h2{
+        font-size: 2.3rem;
+        letter-spacing: 0.5px;
+        margin-top: 1rem;
+    }
+
+    /* OWNER */
+    .card-text span{
+        color: #ff385c;
+    }
+
+    /* PRICE */
+    h4{
+        font-size: 2rem;
+    }
+
+    /* REVIEW FORM SECTION */
+    form{
+        margin-top: 1rem;
+    }
+
+    textarea.form-control{
+        border-radius: 18px !important;
+        border: 1px solid #e5e5e5;
+        padding: 1rem;
+        resize: none;
+        transition: all 0.3s ease;
+        box-shadow: none !important;
+    }
+
+    textarea.form-control:focus{
+        border-color: #ff385c;
+        box-shadow: 0 0 0 4px rgba(255,56,92,0.12) !important;
+    }
+
+    /* BUTTONS */
+    .btn-danger{
+        background: linear-gradient(135deg,#ff385c,#ff5a5f);
+        border: none;
+        transition: all 0.3s ease;
+        font-weight: 600;
+    }
+
+    .btn-danger:hover{
+        transform: translateY(-2px);
+        box-shadow: 0 10px 20px rgba(255,56,92,0.3);
+    }
+
+    .btn-dark{
+        transition: all 0.3s ease;
+    }
+
+    .btn-dark:hover{
+        transform: translateY(-2px);
+    }
+
+    /* REVIEW TITLE */
+    h3,h4{
+        letter-spacing: 0.3px;
+    }
+
+    /* REVIEW CARDS */
+    .review-comment {
+        line-height: 1.9;
+        font-size: 0.97rem;
+        color: #555 !important;
+        word-break: break-word;
+    }
+
+    .col-md-6 .card{
+        background: #ffffff;
+        border: 1px solid rgba(0,0,0,0.04) !important;
+        transition: all 0.35s ease;
+    }
+
+    .col-md-6 .card:hover{
+        transform: translateY(-6px);
+        box-shadow: 0 18px 35px rgba(0,0,0,0.08) !important;
+    }
+
+    /* RATING BADGE */
+    .badge{
+        font-size: 0.85rem;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        background: linear-gradient(135deg,#ff385c,#ff6b6b) !important;
+        box-shadow: 0 6px 15px rgba(255,56,92,0.25);
+    }
+
+    /* REVIEW SECTION */
+    .row.g-4{
+        margin-top: 0.5rem;
+    }
+
+    /* LABELS */
+    .form-label{
+        font-size: 0.95rem;
+        color: #444;
+    }
+
+    /* HR */
+    hr{
+        opacity: 0.08;
+    }
+
+    /* STAR RATING ALIGN */
+    .starability-slot{
+        transform: scale(1.05);
+        margin-top: 0.4rem;
+    }
+
+    /* LOGIN BOX */
+    .text-center.mt-4{
+        background: #fff5f6;
+        padding: 1.5rem;
+        border-radius: 18px;
+    }
+
+    /* RESPONSIVE */
+    @media(max-width:768px){
+
+        h2{
+            font-size: 1.8rem;
         }
 
-        .review-comment {
-            line-height: 1.7;
-            font-size: 0.95rem;
-            word-break: break-word;
+        .show-image{
+            height: 280px;
         }
 
-        .card {
-            transition: 0.3s ease;
+        .card-body{
+            padding: 1.4rem !important;
         }
 
-        .card:hover {
-            transform: translateY(-3px);
+        .badge{
+            font-size: 0.75rem;
         }
+    }
 
-    </style>
+</style>
 
 </body>
