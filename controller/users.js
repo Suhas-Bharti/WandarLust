@@ -31,6 +31,11 @@ module.exports.signup = async (req, res) => {
 
 // Render login form
 module.exports.renderLoginForm = (req, res) => {
+
+    if(req.query.redirect){
+        req.session.redirectUrl = req.query.redirect;
+    }
+
     res.render("users/login");
 };
 
