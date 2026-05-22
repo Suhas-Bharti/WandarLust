@@ -4,7 +4,7 @@
         <h2 class="mb-4 fw-bold text-center" style="color:#fe424d;"> Create New Listing </h2>
         <div class="row mb-5">
             <div class="form-card col-8 offset-2">
-                <form method="post" action="/listings" novalidate class="needs-validation">
+                <form method="post" action="/listings" novalidate class="needs-validation" enctype="multipart/form-data">
                     <div class="mb-3">
                         <label for="title" class="form-label fw-semibold">Title</label>
                         <input type="text" id="title" name="listing[title]" class="form-control custom-input" placeholder="Enter listing title"
@@ -20,8 +20,8 @@
                         <div class="invalid-feedback">Please enter a short description.</div>
                     </div>
                     <div class="mb-3">
-                        <label for="image" class="form-label fw-semibold">Image URL</label>
-                        <input type="text" id="image" name="listing[image]" class="form-control custom-input" placeholder="Paste image link here"/>
+                        <label for="image" class="form-label fw-semibold">Upload Image</label>
+                        <input type="file" id="image" name="listing[image]" class="form-control custom-input"/>
                     </div>
                     <div class="row">
                         <div class="col-md-4 mb-3 ">

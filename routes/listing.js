@@ -7,6 +7,8 @@ const Listing = require("../models/listing");
 const { isLoggedIn, isOwner, validateListing } = require("../middleware"); // Authentication middleware
 
 const listingsController = require("../controller/listings");
+const multer = require("multer");
+const upload = multer({ dest: "uploads/" }); // Configure multer for file uploads
 
 
 
@@ -17,7 +19,9 @@ const listingsController = require("../controller/listings");
 // Index Route, Create Route
  router.route("/")
     .get(wrapAsync(listingsController.index)) // Index Route - Show all listings
-    .post(isLoggedIn, validateListing, wrapAsync(listingsController.createListing)); // Create Route - Add new listing to database
+    // .post(isLoggedIn, validateListing, wrapAsync(listingsController.createListing)); // Create Route - Add new listing to database
+    .post(isLoggedIn, upload.single("listing[image]"), validateListing, wrapAsync(listingsController.createListing)); // Create Route with file upload
+
 
 
 // Create Route - Show form to create new listing
